@@ -21,9 +21,7 @@ import json
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey123"  # Required for session management; use a secure key in production
-client = OpenAI(
-    api_key="OPENAI_API_Key"
-)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # SQLite Database Setup
 DATABASE = "users.db"
