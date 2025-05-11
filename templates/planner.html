@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Career Planner</h1>
+  <form method="POST">
+    <label>Describe your career goal:</label><br>
+    <textarea name="goal" rows="5" placeholder="e.g., I want to become a Software Engineer in 1 year" required></textarea>
+    <button type="submit">Generate Roadmap</button>
+  </form>
+
+  {% if roadmap %}
+    <div class="response-box">
+      <h3>Your Career Roadmap:</h3>
+      <pre>{{ roadmap }}</pre>
+    </div>
+  {% endif %}
+{% endblock %}
