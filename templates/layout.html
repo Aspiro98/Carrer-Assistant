@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Career Assistant</h2>
+    <div class="profile-image-container">
+      {% if user_profile.profile_image %}
+        <img src="data:image/jpeg;base64,{{ user_profile.profile_image }}" alt="Profile Image" class="profile-image">
+      {% else %}
+        <div class="profile-image-placeholder">No Image</div>
+      {% endif %}
+    </div>
+    {% if session.name %}
+      <p class="user-greeting">Hello, {{ session.name }}</p>
+    {% endif %}
+    <ul>
+      <!-- <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a></li> -->
+      <li><a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+      <li><a href="{{ url_for('resume') }}" class="{% if request.endpoint == 'resume' %}active{% endif %}">Resume Analyzer</a></li>
+      <li><a href="{{ url_for('interview') }}" class="{% if request.endpoint == 'interview' %}active{% endif %}">Interview Prep</a></li>
+      <li><a href="{{ url_for('job_analyzer') }}" class="{% if request.endpoint == 'job_analyzer' %}active{% endif %}">Job Analyzer</a></li>
+      <li><a href="{{ url_for('linkedin') }}" class="{% if request.endpoint == 'linkedin' %}active{% endif %}">LinkedIn Optimizer</a></li>
+      <li><a href="{{ url_for('planner') }}" class="{% if request.endpoint == 'planner' %}active{% endif %}">Career Planner</a></li>
+      {% if session.user_id %}
+
+        <li><a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">Profile</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">Login</a></li>
+        <li><a href="{{ url_for('register') }}" class="{% if request.endpoint == 'register' %}active{% endif %}">Register</a></li>
+      {% endif %}
+    </ul>
+  </div>
+  <div class="main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Resume Analyzer</h1>
+  <form action="/resume" method="POST" enctype="multipart/form-data">
+    <input type="file" name="resume" required />
+    <button type="submit">Upload Resume</button>
+  </form>
+
+  {% if gpt_response %}
+    <div class="response-box">
+      <h3>AI Response:</h3>
+      <pre>{{ gpt_response }}</pre>
+    </div>
+  {% endif %}
+{% endblock %}

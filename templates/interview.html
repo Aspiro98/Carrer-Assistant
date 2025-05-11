@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Interview Prep</h1>
+  <div class="interview-container">
+    <form method="POST" class="job-role-form" style="max-width: 500px; width: 100%;">
+      <label>Enter Your Job Role:</label><br>
+      <input type="text" name="job_role" id="job-role-input" placeholder="e.g., Software Engineer" required>
+      <button type="submit">Generate Questions</button>
+    </form>
+    <div class="question-section">
+      <h3>Mock Interview Questions</h3>
+      {% if questions %}
+        <p id="current-question">{{ questions[0] }}</p>
+      {% else %}
+        <p id="current-question">Please enter a job role to generate questions.</p>
+      {% endif %}
+      <button onclick="nextQuestion()" style="align-items: center;">Next Question</button>
+    </div>
+    <div class="response-section">
+      <h3>Your Response</h3>
+      <button id="start-btn" onclick="startRecording()" style="align-items: center;">Start Recording</button>
+      <button id="stop-btn" onclick="stopRecording()" style="display: none; align-items: center;">Stop Recording</button>
+      <p id="status">Status: Ready</p>
+      <p id="transcription">Transcription will appear here...</p>
+      <button onclick="analyzeResponse()" id="get-feedback">Get Feedback</button>
+      <div id="feedback" style="display: none;">
+        <h4>Feedback</h4>
+        <p id="feedback-text"></p>
+      </div>
+    </div>
+  </div>
+  <script>
+    let recognition = null;
+    let isRecording = false;
+    let questions = {{ questions|tojson|safe if questions else '[]' }};
+    let currentQuestionIndex = 0;
+
+    function startRecording() {
+      if (isRecording) return;
+      if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+        document.getElementById('status').textContent = 'Speech Recognition not supported.';
+        return;
+      }
+
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = true;
+        recognition.continuous = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = () => {
+          isRecording = true;
+          document.getElementById('start-btn').style.display = 'none';
+          document.getElementById('stop-btn').style.display = 'inline';
+          document.getElementById('status').textContent = 'Status: Recording...';
+          document.getElementById('transcription').textContent = '';
+        };
+
+        recognition.onresult = (event) => {
+          let transcript = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript;
+          }
+          document.getElementById('transcription').textContent = transcript;
+        };
+
+        recognition.onerror = (event) => {
+          document.getElementById('status').textContent = `Error: ${event.error}`;
+          document.getElementById('transcription').textContent = 'Error occurred.';
+          stopRecording();
+        };
+
+        recognition.onend = () => {
+          isRecording = false;
+          document.getElementById('start-btn').style.display = 'inline';
+          document.getElementById('stop-btn').style.display = 'none';
+          document.getElementById('status').textContent = 'Status: Stopped';
+          recognition = null;
+        };
+
+        recognition.start();
+      }).catch(() => {
+        document.getElementById('status').textContent = 'Microphone access denied.';
+      });
+    }
+
+    function stopRecording() {
+      if (recognition && isRecording) recognition.stop();
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+      document.getElementById('current-question').textContent = questions[currentQuestionIndex] || 'No more questions.';
+      document.getElementById('transcription').textContent = 'Transcription will appear here...';
+      document.getElementById('feedback').style.display = 'none';
+      document.getElementById('status').textContent = 'Status: Ready';
+    }
+
+    async function analyzeResponse() {
+      const transcription = document.getElementById('transcription').textContent;
+      if (!transcription || transcription === 'Transcription will appear here...' || transcription === 'Error occurred.') {
+        document.getElementById('feedback-text').textContent = 'Please record a response first.';
+        document.getElementById('feedback').style.display = 'block';
+        return;
+      }
+
+      document.getElementById('feedback-text').textContent = 'Generating feedback...';
+      document.getElementById('feedback').style.display = 'block';
+
+      try {
+        const response = await fetch('{{ url_for("get_feedback") }}', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript: transcription }),
+        });
+        const data = await response.json();
+        document.getElementById('feedback-text').textContent = data.feedback || ('Error: ' + data.error);
+      } catch (error) {
+        document.getElementById('feedback-text').textContent = 'Error: ' + error.message;
+      }
+    }
+  </script>
+{% endblock %}

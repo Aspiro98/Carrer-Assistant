@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="homepage-container">
+  <header class="header">
+    <div class="auth-buttons">
+      <a href="{{ url_for('login') }}" class="auth-button">Login</a>
+      <a href="{{ url_for('register') }}" class="auth-button">Register</a>
+    </div>
+  </header>
+
+  <section class="intro-section">
+    <h2>Welcome to Career Assistant</h2>
+    <p>Career Assistant is your one-stop platform to boost your career with AI-powered tools. Whether you're polishing your resume, preparing for interviews, analyzing job descriptions, optimizing your LinkedIn profile, or planning your career path, we’ve got you covered.</p>
+  </section>
+
+  <section class="features-section">
+    <h2>Our Features</h2>
+    <ul>
+      <li><strong>Resume Analyzer:</strong> Upload your resume to get AI-powered suggestions for improvement.</li>
+      <li><strong>Interview Prep:</strong> Generate mock interview questions based on your job role.</li>
+      <li><strong>Job Analyzer:</strong> Compare your resume with a job description to identify gaps.</li>
+      <li><strong>LinkedIn Optimizer:</strong> Optimize your LinkedIn summary for better visibility.</li>
+      <li><strong>Career Planner:</strong> Create a personalized roadmap to achieve your career goals.</li>
+    </ul>
+  </section>
+
+  <section class="about-section">
+    <h2>About Me</h2>
+    <p>Hi, I'm the creator of Career Assistant. With a passion for helping professionals succeed, I built this platform to provide accessible, AI-driven tools for career growth. My goal is to empower you to achieve your dream job with confidence.</p>
+  </section>
+
+  <section class="contact-section">
+    <h2>Contact Me</h2>
+    <p>Email: aspiroalex95@gmail.com</p>
+    <p>Phone: +1 (469) 592-9129</p>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 Career Assistant. All rights reserved.</p>
+  </footer>
+</div>
+{% endblock %}
