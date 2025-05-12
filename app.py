@@ -496,7 +496,7 @@ def linkedin():
                 f"Improve this LinkedIn summary for clarity and impact:\n\n{summary}"
             )
             response = client.chat.completions.create(
-                model="gmt-4",
+                model="gpt-4",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.6,
             )
