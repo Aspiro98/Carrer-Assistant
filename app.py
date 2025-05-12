@@ -454,13 +454,28 @@ def job_analyzer():
                 "- Be no more than 2 lines per suggestion\n"
                 "- Avoid generic advice (focus on directly addressing missing skills/keywords)\n"
             ).format(resume=resume_text, jd=job_description)
+
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.5,
             )
             analysis_text = response.choices[0].message.content
-            print("Raw OpenAI Response:", analysis_text)  # Debug output
+            print("Raw OpenAI Response:", analysis_text)
+
+            section_map = {
+                "1️⃣ - Present Skills": "present_skills",
+                "- Present skills": "present_skills",
+                "2️⃣ - Present Keywords": "present_keywords",
+                "- Present keywords": "present_keywords",
+                "3️⃣ - Missing Skills": "missing_skills",
+                "- Missing skills": "missing_skills",
+                "4️⃣ - Missing Keywords": "missing_keywords",
+                "- Missing keywords": "missing_keywords",
+                "5️⃣ - Improvement Suggestions": "suggestions",
+                "- Improvement suggestions": "suggestions",
+            }
+
             analysis = {
                 "present_skills": "",
                 "present_keywords": "",
@@ -469,38 +484,23 @@ def job_analyzer():
                 "suggestions": "",
             }
             current_section = None
+
             for line in analysis_text.split("\n"):
                 line = line.strip()
-                if line.startswith("- Present skills:"):
-                    current_section = "present_skills"
-                    analysis["present_skills"] = line.replace(
-                        "- Present skills:", ""
-                    ).strip()
-                elif line.startswith("- Present keywords:"):
-                    current_section = "present_keywords"
-                    analysis["present_keywords"] = line.replace(
-                        "- Present keywords:", ""
-                    ).strip()
-                elif line.startswith("- Missing skills:"):
-                    current_section = "missing_skills"
-                    analysis["missing_skills"] = line.replace(
-                        "- Missing skills:", ""
-                    ).strip()
-                elif line.startswith("- Missing keywords:"):
-                    current_section = "missing_keywords"
-                    analysis["missing_keywords"] = line.replace(
-                        "- Missing keywords:", ""
-                    ).strip()
-                elif line.startswith("- Improvement suggestions:"):
-                    current_section = "suggestions"
-                    analysis["suggestions"] = line.replace(
-                        "- Improvement suggestions:", ""
-                    ).strip()
-                elif current_section and line and not line.startswith("-"):
-                    analysis[current_section] += " " + line
+                for key, value in section_map.items():
+                    if line.startswith(key):
+                        current_section = value
+                        analysis[current_section] = line.replace(key, "").strip()
+                        break
+                else:
+                    if current_section and line and not line.startswith("-"):
+                        analysis[current_section] += "\n" + line
+
             for key in analysis:
                 analysis[key] = analysis[key].strip() or "None identified."
+
             increment_user_task_count(session["user_id"])
+
     return render_template(
         "job_analyzer.html", analysis=analysis, user_profile=user_profile
     )
