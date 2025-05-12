@@ -23,7 +23,7 @@ Career Assistant is an AI-powered web application to help students and professio
 
 ## 🎉 Live Demo
 
-👉 [https://your-app-name.onrender.com](https://your-app-name.onrender.com) (replace with your Render URL)
+👉 https://carrer-assistant.onrender.com
 
 ## 🛠️ Setup Locally
 
