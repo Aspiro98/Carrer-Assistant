@@ -9,6 +9,7 @@
       <textarea name="job_description" rows="5" placeholder="Paste your job description here..." required></textarea><br>
       <button type="submit">Analyze</button>
     </form>
+
     {% if analysis %}
       <div class="analysis-section">
         <h3>Resume Analysis</h3>
@@ -23,17 +24,17 @@
           <tbody>
             <tr>
               <td><strong>Present in Resume</strong></td>
-              <td>{{ analysis.present_skills }}</td>
-              <td>{{ analysis.present_keywords }}</td>
+              <td>{{ analysis.present_skills | replace('\n', '<br>') | safe }}</td>
+              <td>{{ analysis.present_keywords | replace('\n', '<br>') | safe }}</td>
             </tr>
             <tr>
               <td><strong>Missing from Job Description</strong></td>
-              <td>{{ analysis.missing_skills }}</td>
-              <td>{{ analysis.missing_keywords }}</td>
+              <td>{{ analysis.missing_skills | replace('\n', '<br>') | safe }}</td>
+              <td>{{ analysis.missing_keywords | replace('\n', '<br>') | safe }}</td>
             </tr>
           </tbody>
         </table>
-        <p><strong>Improvement Suggestions:</strong> {{ analysis.suggestions }}</p>
+        <p><strong>Improvement Suggestions:</strong><br> {{ analysis.suggestions | replace('\n', '<br>') | safe }}</p>
       </div>
     {% endif %}
   </div>
