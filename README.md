@@ -27,25 +27,29 @@ Career Assistant is an AI-powered web application to help students and professio
 ## 🛠️ Setup Locally
 
 1. **Clone this repo:**
-```bash
-git clone https://github.com/Aspiro98/Carrer-Assistant.git
-cd Carrer-Assistant
+  ```bash
+  git clone https://github.com/Aspiro98/Carrer-Assistant.git
+  cd Carrer-Assistant
+  ```
 
 2. **Create virtual env & install dependencies:**
-```bash
-python -m venv venv
-source venv/bin/activate    # Linux / Mac
-venv\Scripts\activate       # Windows
-pip install -r requirements.txt
+  ```bash
+  python -m venv venv
+  source venv/bin/activate    # Linux / Mac
+  venv\Scripts\activate       # Windows
+  pip install -r requirements.txt
+  ```
 
 3. **Add your OpenAI API key as environment variable:**
-```bash
--export OPENAI_API_KEY=your-key-here # Linux/Mac
--set OPENAI_API_KEY=your-key-here # Windows
+  ```bash
+  -export OPENAI_API_KEY=your-key-here # Linux/Mac
+  -set OPENAI_API_KEY=your-key-here # Windows
+  ```
 
 4. **Run locally:**
-```bash
--python app.py
+  ```bash
+  -python app.py
+  ```
 
 ## 📄 License
 
