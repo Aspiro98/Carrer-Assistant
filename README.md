@@ -27,7 +27,7 @@ Career Assistant is an AI-powered web application to help students and professio
 ## 🛠️ Setup Locally
 
 1. Clone this repo:
-git clone https://github.com/your-username/Carrer-Assistant.git
+git clone https://github.com/Aspiro98/Carrer-Assistant.git
 cd Carrer-Assistant
 
 2. Create virtual env & install dependencies:
