@@ -32,19 +32,16 @@ git clone https://github.com/Aspiro98/Carrer-Assistant.git
 cd Carrer-Assistant
 
 2. Create virtual env & install dependencies:
-```bash
 python -m venv venv
 source venv/bin/activate    # Linux / Mac
 venv\Scripts\activate       # Windows
 pip install -r requirements.txt
 
 3. Add your OpenAI API key as environment variable:
-```bash
 -export OPENAI_API_KEY=your-key-here # Linux/Mac
 -set OPENAI_API_KEY=your-key-here # Windows
 
 4. Run locally:
-```bash
 -python app.py
 
 ## 📄 License
