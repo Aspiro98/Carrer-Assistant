@@ -10,7 +10,6 @@ Career Assistant is an AI-powered web application to help students and professio
 - LinkedIn Summary Optimizer
 - Career Planner (AI career roadmap)
 - User registration, login, and profile management
-- Modern dashboard UI with drag-and-drop cards
 
 ## 🚀 Tech Stack
 
